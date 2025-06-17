@@ -39,9 +39,15 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       CidrBlock: 10.0.1.0/24
-      AvailabilityZone: !Select
-        - 0
-        - !GetAZs ''
+      AvailabilityZone: !Select [0, !GetAZs '']
+      MapPublicIpOnLaunch: true
+
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: !Select [1, !GetAZs '']
       MapPublicIpOnLaunch: true
 
   EKSClusterRole:
@@ -84,6 +90,7 @@ Resources:
       ResourcesVpcConfig:
         SubnetIds:
           - !Ref PublicSubnet1
+          - !Ref PublicSubnet2
 
   NodeGroup:
     Type: AWS::EKS::Nodegroup
@@ -96,6 +103,7 @@ Resources:
         MinSize: !Ref MinSize
       Subnets:
         - !Ref PublicSubnet1
+        - !Ref PublicSubnet2
       InstanceTypes:
         - !Ref NodeInstanceType
       NodeRole: !GetAtt EKSNodeGroupRole.Arn
