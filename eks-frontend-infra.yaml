@@ -39,16 +39,26 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       CidrBlock: 10.0.1.0/24
-      AvailabilityZone: !Select [0, !GetAZs '']
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
       MapPublicIpOnLaunch: true
+      Tags:
+        - Key: !Sub "kubernetes.io/cluster/${ClusterName}"
+          Value: owned
+        - Key: Name
+          Value: eks-public-subnet-1
 
   PublicSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
       CidrBlock: 10.0.2.0/24
-      AvailabilityZone: !Select [1, !GetAZs '']
+      AvailabilityZone: !Select [ 1, !GetAZs '' ]
       MapPublicIpOnLaunch: true
+      Tags:
+        - Key: !Sub "kubernetes.io/cluster/${ClusterName}"
+          Value: owned
+        - Key: Name
+          Value: eks-public-subnet-1
 
   EKSClusterRole:
     Type: AWS::IAM::Role
