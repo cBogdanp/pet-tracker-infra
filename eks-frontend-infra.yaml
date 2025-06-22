@@ -137,18 +137,21 @@ Resources:
       Tags:
         - Key: Name
           Value: eks-node-sg
-      SecurityGroupIngress:
-        # Allow all traffic from nodes themselves (node-to-node communication)
-        - IpProtocol: -1
-          FromPort: 0
-          ToPort: 65535
-          SourceSecurityGroupId: !Ref NodeSecurityGroup
       SecurityGroupEgress:
         # Allow all outbound traffic (required for internet access, pulling images)
         - IpProtocol: -1
           FromPort: 0
           ToPort: 65535
           CidrIp: 0.0.0.0/0
+
+  NodeSecurityGroupIngressSelf:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref NodeSecurityGroup
+      IpProtocol: -1
+      FromPort: 0
+      ToPort: 65535
+      SourceSecurityGroupId: !Ref NodeSecurityGroup
 
   EKSCluster:
     Type: AWS::EKS::Cluster
