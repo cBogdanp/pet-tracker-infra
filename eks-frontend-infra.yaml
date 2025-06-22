@@ -6,7 +6,7 @@ Parameters:
     Default: frontend-micro-frontend-cluster
   NodeInstanceType:
     Type: String
-    Default: t2.nano
+    Default: t3.medium
   DesiredCapacity:
     Type: Number
     Default: 2
@@ -58,7 +58,7 @@ Resources:
         - Key: !Sub "kubernetes.io/cluster/${ClusterName}"
           Value: owned
         - Key: Name
-          Value: eks-public-subnet-1
+          Value: eks-public-subnet-2
 
   EKSClusterRole:
     Type: AWS::IAM::Role
